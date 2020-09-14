@@ -1,21 +1,15 @@
 
-import React, { Suspense } from 'react';
+import React, { Suspense, lazy } from 'react';
 
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import Navigation from './components/navigation/Navigation';
-import HomePage from './pages/HomePage'
+// import HomePage from './pages/HomePage'
+// import MovieDetailsPage from './pages/MovieDetailsPage';
+// import MoviesPage from './pages/MoviesPage';
 
-// ===============================================================
-import { getMovieDetails } from './services/GetFetch';
-import MovieDetailsPage from './pages/MovieDetailsPage';
-
-
-console.log(getMovieDetails(337401));
-
-let newDate = new Date ('2019-09-10')
-let year = newDate.getFullYear()
-console.log(year);
-// =====================================================================
+const AsyncHomePage = lazy(()=>import('./pages/HomePage' /* webpackChunkName: "HomePage" */))
+const AsyncMovieDetailsPage = lazy(()=>import('./pages/MovieDetailsPage' /* webpackChunkName: "MovieDetailsPage" */))
+const AsyncMoviesPage = lazy(()=>import('./pages/MoviesPage' /* webpackChunkName: "MoviesPage" */))
 
 
 export default function App() {
@@ -30,10 +24,10 @@ export default function App() {
       <div>
         <Suspense fallback={<div>Loading...</div>}>
           <Switch>
-            <Route path="/" exact component={HomePage} />
-            <Route path="/movies/:movieId" component={MovieDetailsPage} />
-            {/* <Route path="/movies" component={MoviesPage} /> */}
-            {/* <Redirect to="/" /> */}
+            <Route exact path="/" component={AsyncHomePage} />
+            <Route path="/movies/:movieId" component={AsyncMovieDetailsPage} />
+            <Route path="/movies" component={AsyncMoviesPage} />
+            <Redirect to="/" />
           </Switch>
         </Suspense>
       </div>

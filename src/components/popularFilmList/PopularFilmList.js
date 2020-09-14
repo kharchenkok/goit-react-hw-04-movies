@@ -11,7 +11,7 @@ export default class PopularFilmList extends Component{
     }
     async componentDidMount(){
         await getPopular().then(data => {
-            console.log(data);
+
             this.setState(()=>({
                 popularList:[...data]
             }))

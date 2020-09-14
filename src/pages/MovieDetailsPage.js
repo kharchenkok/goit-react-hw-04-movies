@@ -1,87 +1,54 @@
-import React, { Component, Suspense } from 'react';
-// import { getMovieDetails } from '../services/GetFetch';
-import { withRouter, Switch, Route } from 'react-router-dom';
-// import { withRouter } from 'react-router-dom';
-// import { getMovieDetails } from './services/GetFetch';
+import React, { Component } from 'react';
+
 import MovieDetails from '../components/movieDetails/MovieDetails';
 import GoBackButton from '../components/goBackButton/GoBackButton';
+import AdditionalInfo from '../components/additionalInfo/AdditionalInfo';
+import { getMovieDetails } from '../services/GetFetch';
 
-// class MovieDetailsPage extends Component{
-//     state={
-//         movie:{},
-//         title:'',
-//         releaseYear:'',
-//         score:'',
-//         overview:'',
-//         genres:[],
-//         posterSrc:'',
-//         filmId:'',
-//         search:'',
-//         from:'',
+export default class AsyncMovieDetailsPage extends Component {
+  state = {
+    title: '',
+    releaseYear: '',
+    score: '',
+    overview: '',
+    genres: [],
+    posterSrc: '',
+    from: '',
+    search: '',
+  };
 
-//     }
+  async componentDidMount() {
+    const id = this.props.match.params.movieId;
+    if (this.props.location.state?.from) {
+      this.setState({
+        from: this.props.location.state.from.pathname,
+        search: this.props.location.state.from.search,
+      });
+    }
 
-//     async componentDidMount(){
-//         console.log(this.props);
-//         console.log(this.props.match.params.movieId);
-//         const id = this.props.match.params.movieId
+    await getMovieDetails(id).then(({ data }) => {
+      this.setState({
+        title: data.title,
+        releaseYear: new Date(`${data.release_date}`).getFullYear(),
+        score: data.vote_average,
+        overview: data.overview,
+        genres: data.genres,
+        posterSrc: data.poster_path,
+      });
+    });
+  }
 
-//         await getMovieDetails(id).then(({data})=>{
-//             // const releaseYear = new Date (`${data.release_date}`).getFullYear()
-//             console.log(data);
-// this.setState({
-//     movie:data,
-//     title:data.title,
-//     releaseYear:new Date (`${data.release_date}`).getFullYear(),
-//         score:data.vote_average,
-//         overview:data.overview*10,
-//         genres:data.genres,
-//         posterSrc:data.poster_path,
-//         filmId:data.id,
-
-// })
-//         })
-//     }
-//     render(){
-// const{movie,title,releaseYear,score,overview,genres,posterSrc,filmId} = this.state
-//         return (
-//           <>
-//             {/* <MovieDetails /> */}
-//           </>
-//         )
-//     }
-// }
-
-// export default MovieDetailsPage
-
-class MovieDetailsPage extends Component {
   render() {
-    const { match } = this.props;
-    const id = match.params.movieId;
-    console.log(id);
-    console.log('match', match);
-    console.log('location', this.props.location);
+    const { from, search } = this.state;
 
     return (
       <>
-        <GoBackButton {...this.props}/>
-        <MovieDetails {...this.props} />
-        {/* <AdditionalInfo {...this.props} /> */}
-        {/* <Suspense fallback={<div>Loading...</div>}>
-          <Switch>
-            <Route
-              path={`${match.url}/cast`}
-              render={props => <Cast {...props} id={id} />}
-            />
-            <Route
-              path={`${match.url}/reviews`}
-              render={props => <Reviews {...props} id={id} />}
-            />
-          </Switch>
-        </Suspense> */}
+        <GoBackButton from={from} search={search} />
+        <MovieDetails {...this.state} />
+        <AdditionalInfo {...this.props} />
       </>
     );
   }
 }
 
-export default withRouter(MovieDetailsPage);
+
