@@ -1,0 +1,1 @@
+{"version":3,"sources":["MoviesPageStyles.module.css"],"names":[],"mappings":"AAAA,oCACI,iBACJ,CACA,oCACA,gBACA","file":"MoviesPage.a0c15de6.chunk.css","sourcesContent":[".searchForm{\r\n    padding: 10px 40px;\r\n}\r\n.searchList{\r\npadding: 5px 40px;\r\n}"]}
