@@ -4,7 +4,8 @@ import { getReviews } from "../../services/GetFetch";
 
 export default class AsyncReviews extends Component {
   state = {
-    reviews: []
+    reviews: [],
+    error:null
   };
 
    componentDidMount() {
@@ -14,7 +15,8 @@ export default class AsyncReviews extends Component {
       this.setState({
         reviews: data.results
       })
-    );
+    )
+    .catch(error=>this.setState({error:error}))
   }
 
   render() {

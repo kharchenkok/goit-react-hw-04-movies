@@ -6,6 +6,7 @@ import { getMovieCast } from '../../services/GetFetch';
 export default class AsyncCast extends Component {
   state = {
     cast: [],
+    error:null
   };
   componentDidMount() {
     const id = this.props.id;
@@ -13,7 +14,8 @@ export default class AsyncCast extends Component {
       this.setState({
         cast: data.cast,
       }),
-    );
+    )
+    .catch(error=>this.setState({error:error}))
   }
   render() {
     const { cast } = this.state;

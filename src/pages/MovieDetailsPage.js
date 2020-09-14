@@ -15,6 +15,7 @@ export default class AsyncMovieDetailsPage extends Component {
     posterSrc: '',
     from: '',
     search: '',
+    error:null
   };
 
   async componentDidMount() {
@@ -35,7 +36,8 @@ export default class AsyncMovieDetailsPage extends Component {
         genres: data.genres,
         posterSrc: data.poster_path,
       });
-    });
+    })
+    .catch(error=>this.setState({error:error}))
   }
 
   render() {

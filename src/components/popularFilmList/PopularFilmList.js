@@ -7,7 +7,8 @@ import Styles from './PopularFilmListStyles.module.css'
 
 export default class PopularFilmList extends Component{
     state={
-        popularList:[]
+        popularList:[],
+        error:null
     }
     async componentDidMount(){
         await getPopular().then(data => {
@@ -16,6 +17,7 @@ export default class PopularFilmList extends Component{
                 popularList:[...data]
             }))
         })
+        .catch(error=>this.setState({error:error}))
     }
     render(){
         const{popularList}=this.state

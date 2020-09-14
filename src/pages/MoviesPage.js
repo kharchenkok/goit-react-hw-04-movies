@@ -11,7 +11,8 @@ import Styles from "./MoviesPageStyles.module.css";
 export default class AsyncMoviesPage extends Component {
   state = {
     searchQuery: "",
-    searchList: []
+    searchList: [],
+    error:null
   };
 
   componentDidMount() {
@@ -37,7 +38,8 @@ export default class AsyncMoviesPage extends Component {
         searchList: data.results,
         searchQuery: ""
       });
-    });
+    })
+    .catch(error=>this.setState({error:error}))
   };
 
   handleChange = e => {
