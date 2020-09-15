@@ -1,15 +1,12 @@
-import React, { Component } from "react";
-import Styles from "./GoBackButtonStyles.module.css";
-import { withRouter } from "react-router-dom";
+import React, { Component } from 'react';
+import Styles from './GoBackButtonStyles.module.css';
+import { withRouter } from 'react-router-dom';
 
- class GoBackButton extends Component {
+class GoBackButton extends Component {
   handleGoBack = () => {
-  
-      if (this.props.from) {
-      if (this.props.search) {
-        this.props.history.push(`${this.props.from}${this.props.search}`);
-      }
-    } else return this.props.history.push("/");
+     (this.props.from && this.props.search) ?
+      this.props.history.push(`${this.props.from}${this.props.search}`):
+    this.props.history.push('/')
   };
 
   render() {
